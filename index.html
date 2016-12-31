@@ -14,30 +14,29 @@
   <body>
       
       <div class="container-fluid">
-          <div class="row">
-              17.4098599,78.3345316,13z
-    <h3>My Neighborhood Map Demo</h3>
-          </div>
-          <div class="col-sm-4">
-              <ul  data-bind="foreach: locationList">
-              <li data-bind="text: name, click: $parent.setLocation"></li>
 
+          <div class="col-sm-4 list-box">
+               <h3>Hyd Neighborhood Map</h3>
+             <input class="search-box" id="search-box" data-bind="textInput: searchItem, valueUpdate: 'afterkeydown'" />
+              <div class="list-group" data-bind="foreach: filteredList">
+  <a href="#" class="list-group-item active" data-bind="text: name, click: $parent.setLocation">First item</a>
+              </div>
 
-              </ul>
           <div data-bind="with: currentLocation">
               <h2 data-bind="text: name"></h2>
-              <div class="wikipedia-container">
-                  Relevant Wikipedia Links
-        <ul id="wikipedia-header" data-bind="foreach: wikiLinks">
-                  <li id="wikipedia-links" data-bind="text: $data"></li>
-                  </ul>
+              <div class="wikipedia-container" data-bind="text: description">
 
-    </div>
+
+
+    </div><a href="" data-bind="text:name, attr:{ href:url} "></a>
+
               </div>
 
           </div>
-          <div class="col-sm-8">
+          <div class="col-sm-8 m-container">
+
               <div id="map">
+
               </div>
           </div>
       

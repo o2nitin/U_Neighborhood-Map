@@ -1,4 +1,33 @@
  #map {
-        height: 550px;
+        height: 650px;
         width: 100%;
        }
+.m-container{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.search {
+	width: 100%;
+	display: flex;
+}
+.search-box {
+	flex-grow: 1;
+    width: 100%;
+    height: 31px;
+	font-size: 1em;
+	padding: 5px 20px;
+    color: black;
+}
+.list-box{
+    background-color:#4b5059;
+    height: 650px;
+    color: white;
+}
+.list{
+    background-color: azure;
+}
+.list-group{
+    height: 350px;
+    overflow: scroll;
+    overflow-x: hidden;
+}

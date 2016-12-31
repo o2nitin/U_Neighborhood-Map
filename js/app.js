@@ -21,22 +21,22 @@
         lng:78.416451
     },
     {
-      name:'Lanco Hills',
+      name:'Manikonda',
         lat:17.411028, 
         lng:78.375252
     },
 	{
-		name: 'IIIT Hyderabad',
+		name: 'International Institute of Information Technology',
 		lat: 17.447156,
 		lng:78.3465713
 	},
 	{
-		name: 'ISB Hyderabad',
+		name: 'Indian School of Business',
 		lat: 17.42596768,
 		lng: 78.3153504
 	},
 	{
-		name: 'Golkonda Fort',
+		name: 'Golkonda',
 		lat: 17.383379,
 		lng:  78.401181
 	},
@@ -59,16 +59,15 @@
 ];
     
      var map;
-  var $wikiElem = $('#wikipedia-links');
-    
-    
+
     var Location = function(data){
        var self = this;
         this.name = data.name;
         this.lat = data.lat;
 	    this.lng = data.lng;
+        this.description= "";
+        this.url = "";
         this.visible = ko.observable(true);
-       // this.contentString = '<b>'+self.name +'</b>';
         this.infoWindow = new google.maps.InfoWindow({content: self.contentString});
         this.marker = new google.maps.Marker({
 			position: new google.maps.LatLng(data.lat, data.lng),
@@ -76,25 +75,23 @@
 			title: data.name
             });
         
-         this.marker.addListener('click', function() {
-             self.contentString = '<b>'+self.name +'</b>';
-             self.infoWindow.setContent(self.contentString);     
-            self.infoWindow.open(map, self.marker);
-        });
-
-        this.clickList = function(self){
-            self.contentString = '<b>'+self.name +'</b>';
-             self.infoWindow.setContent(self.contentString);
-            self.infoWindow.open(map, self.marker);
-            console.log("hi");
-        }
+        this.showMarker = ko.computed(function() {
+		if(this.visible() === true) {
+			this.marker.setMap(map);
+            } else {
+			this.marker.setMap(null);
+		      }
+		      return true;
+	       }, this);
 
 
 
-        this.wikiLinks = ko.observableArray([]);
+
+
+     this.wikiLinks = ko.observableArray([]);
     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + self.name + '&format=json&callback=wikiCallback';
     var wikiRequestTimeout = setTimeout(function(){
-        $wikiElem.text("failed to get wikipedia resources");
+        $wikipedia-header.text("failed to get wikipedia resources");
     }, 8000);
 
     $.ajax({
@@ -102,14 +99,31 @@
         dataType: "jsonp",
         jsonp: "callback",
         success: function( response ) {
+            console.log(response);
             self.wikiLinks = "";
             self.wikiLinks = response[1];
-            console.log(self.wikiLinks);
 
+            self.description = response[2][0];
+            self.url = response[3][0];
 
             clearTimeout(wikiRequestTimeout);
         }
     });
+
+             this.marker.addListener('click', function() {
+             self.contentString = '<b>'+self.name +'</b><div>'+self.description+'</div>';
+                 console.log(self.contentString)
+             self.infoWindow.setContent(self.contentString);
+            self.infoWindow.open(map, self.marker);
+             self.clickList(self);
+        });
+
+        this.clickList = function(self){
+            self.contentString = '<b>'+self.name +'</b><div>'+self.description+'</div>';
+             self.infoWindow.setContent(self.contentString);
+            self.infoWindow.open(map, self.marker);
+            console.log("hi");
+        }
 
 
   
@@ -120,7 +134,7 @@
     function AppViewModel() {
 	var self = this;
 
-	this.searchTerm = ko.observable("");
+	this.searchItem = ko.observable("");
 
 	this.locationList = ko.observableArray([]);
 
@@ -139,21 +153,24 @@
     this.setLocation = function(clickedLoc){
         self.currentLocation(clickedLoc);
         clickedLoc.clickList(this);
-//        self.callWkiki(clickedLoc);
-
-//         this.callWkiki = function(clickedLoc){
-//
-//    }();
     }
 
-
-
-
-
-    // load wikipedia data
-
-
-
+    	this.filteredList = ko.computed( function() {
+		var filter = self.searchItem().toLowerCase();
+		if (!filter) {
+			self.locationList().forEach(function(locationItem){
+				locationItem.visible(true);
+			});
+			return self.locationList();
+		} else {
+			return ko.utils.arrayFilter(self.locationList(), function(locationItem) {
+				var string = locationItem.name.toLowerCase();
+				var result = (string.search(filter) >= 0);
+				locationItem.visible(result);
+				return result;
+			});
+		}
+	}, self);
 
 
 
