@@ -104,12 +104,10 @@
 	});
 
 
-
 }
 
     
 function startApp() {
-	AppViewModel();
+    	ko.applyBindings(new AppViewModel());
 }
-    
     
