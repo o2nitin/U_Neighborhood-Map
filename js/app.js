@@ -103,6 +103,10 @@
 		self.locationList.push( new Location(locationItem));
 	});
 
+    this.currentLocation = ko.observable(this.locationList()[0]);
+    this.setLocation = function(clickedLoc){
+        self.currentLocation(clickedLoc);
+    }
 
 }
 
