@@ -60,6 +60,7 @@ var initialLocations = [{
 
 var map;
 var infoWindow;
+var $wikiElem = $('#wikipedia-header');
 
 // my octopus (controller)
 var Location = function(data) {
@@ -81,9 +82,9 @@ var Location = function(data) {
 
     this.showMarker = ko.computed(function() {
         if (this.visible() === true) {
-            this.marker.setMap(map);
+            this.marker.setVisible(true);
         } else {
-            this.marker.setMap(null);
+            this.marker.setVisible(false);
         }
         return true;
     }, this);
@@ -92,18 +93,16 @@ var Location = function(data) {
     this.wikiLinks = ko.observableArray([]);
     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + self.name + '&format=json&callback=wikiCallback';
     var wikiRequestTimeout = setTimeout(function() {
-        $wikipedia - header.text("failed to get wikipedia resources");
+        $wikiElem.text("failed to get Some or all wikipedia resources please Reload the page");
     }, 8000);
 
     $.ajax({
         url: wikiUrl,
-        dataType: "jsonp",
-        jsonp: "callback",
+        dataType: 'jsonp',
+        jsonp: 'callback',
         success: function(response) {
-            console.log(response);
             self.wikiLinks = "";
             self.wikiLinks = response[1];
-
             self.description = response[2][0];
             self.url = response[3][0];
 
@@ -113,21 +112,14 @@ var Location = function(data) {
 
     this.marker.addListener('click', function() {
         self.contentString = '<b>' + self.name + '</b><div>' + self.description + '</div>';
-        console.log(self.contentString)
+        self.marker.setAnimation(google.maps.Animation.BOUNCE);
+      	setTimeout(function() {
+      		self.marker.setAnimation(null);
+     	}, 2100);
         infoWindow.setContent(self.contentString);
         infoWindow.open(map, self.marker);
         self.clickList(self);
     });
-
-    this.clickList = function(self) {
-        self.contentString = '<b>' + self.name + '</b><div>' + self.description + '</div>';
-        infoWindow.setContent(self.contentString);
-        infoWindow.open(map, self.marker);
-        console.log("hi");
-    }
-
-
-
 }
 
 
@@ -151,7 +143,7 @@ function AppViewModel() {
     this.currentLocation = ko.observable(this.locationList()[0]);
     this.setLocation = function(clickedLoc) {
         self.currentLocation(clickedLoc);
-        clickedLoc.clickList(this);
+        google.maps.event.trigger(clickedLoc.marker, 'click');
     }
 
     this.filteredList = ko.computed(function() {
@@ -176,4 +168,8 @@ function AppViewModel() {
 //applyBindings
 function startApp() {
     ko.applyBindings(new AppViewModel());
+}
+
+function errorHandling() {
+	alert("Google Maps has failed to load....! check internet");
 }
