@@ -16,7 +16,7 @@
         lat:17.463087,
         lng:78.333979
     },
-    {   name:'KBR National Park',
+    {   name:'Kasu Brahmananda Reddy National Park',
         lat: 17.422657, 
         lng:78.416451
     },
@@ -41,7 +41,7 @@
 		lng:  78.401181
 	},
 	{
-		name: 'Nehru Garden',
+		name: 'Nehru Zoological Park',
 		lat: 17.353136,
 		lng: 78.4500068
 	},
@@ -59,6 +59,7 @@
 ];
     
      var map;
+  var $wikiElem = $('#wikipedia-links');
     
     
     var Location = function(data){
@@ -81,6 +82,36 @@
             self.infoWindow.open(map, self.marker);
         });
 
+        this.clickList = function(self){
+            self.contentString = '<b>'+self.name +'</b>';
+             self.infoWindow.setContent(self.contentString);
+            self.infoWindow.open(map, self.marker);
+            console.log("hi");
+        }
+
+
+
+        this.wikiLinks = ko.observableArray([]);
+    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + self.name + '&format=json&callback=wikiCallback';
+    var wikiRequestTimeout = setTimeout(function(){
+        $wikiElem.text("failed to get wikipedia resources");
+    }, 8000);
+
+    $.ajax({
+        url: wikiUrl,
+        dataType: "jsonp",
+        jsonp: "callback",
+        success: function( response ) {
+            self.wikiLinks = "";
+            self.wikiLinks = response[1];
+            console.log(self.wikiLinks);
+
+
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
+
+
   
     }
     
@@ -92,6 +123,7 @@
 	this.searchTerm = ko.observable("");
 
 	this.locationList = ko.observableArray([]);
+
 
 	map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 11,
@@ -106,7 +138,24 @@
     this.currentLocation = ko.observable(this.locationList()[0]);
     this.setLocation = function(clickedLoc){
         self.currentLocation(clickedLoc);
+        clickedLoc.clickList(this);
+//        self.callWkiki(clickedLoc);
+
+//         this.callWkiki = function(clickedLoc){
+//
+//    }();
     }
+
+
+
+
+
+    // load wikipedia data
+
+
+
+
+
 
 }
 

@@ -22,9 +22,17 @@
               <ul  data-bind="foreach: locationList">
               <li data-bind="text: name, click: $parent.setLocation"></li>
 
+
               </ul>
           <div data-bind="with: currentLocation">
               <h2 data-bind="text: name"></h2>
+              <div class="wikipedia-container">
+                  Relevant Wikipedia Links
+        <ul id="wikipedia-header" data-bind="foreach: wikiLinks">
+                  <li id="wikipedia-links" data-bind="text: $data"></li>
+                  </ul>
+
+    </div>
               </div>
 
           </div>
