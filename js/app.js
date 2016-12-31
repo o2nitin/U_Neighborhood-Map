@@ -59,6 +59,7 @@ var initialLocations = [{
 ];
 
 var map;
+var infoWindow;
 
 // my octopus (controller)
 var Location = function(data) {
@@ -69,7 +70,7 @@ var Location = function(data) {
     this.description = "";
     this.url = "";
     this.visible = ko.observable(true);
-    this.infoWindow = new google.maps.InfoWindow({
+    infoWindow = new google.maps.InfoWindow({
         content: self.contentString
     });
     this.marker = new google.maps.Marker({
@@ -113,15 +114,15 @@ var Location = function(data) {
     this.marker.addListener('click', function() {
         self.contentString = '<b>' + self.name + '</b><div>' + self.description + '</div>';
         console.log(self.contentString)
-        self.infoWindow.setContent(self.contentString);
-        self.infoWindow.open(map, self.marker);
+        infoWindow.setContent(self.contentString);
+        infoWindow.open(map, self.marker);
         self.clickList(self);
     });
 
     this.clickList = function(self) {
         self.contentString = '<b>' + self.name + '</b><div>' + self.description + '</div>';
-        self.infoWindow.setContent(self.contentString);
-        self.infoWindow.open(map, self.marker);
+        infoWindow.setContent(self.contentString);
+        infoWindow.open(map, self.marker);
         console.log("hi");
     }
 
