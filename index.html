@@ -1,50 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-   
-	<title>Hyd Neighborhood Map</title>
-
-      <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="css/main.css">
-  </head>
+        <head>
+            <title>Hyd Neighborhood Map</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="css/main.css">
+        </head>
   <body>
-      
       <div class="container-fluid">
-
           <div class="col-sm-4 list-box">
                <h3>Hyd Neighborhood Map</h3>
-             <input class="search-box" id="search-box" data-bind="textInput: searchItem, valueUpdate: 'afterkeydown'" />
-              <div class="list-group" data-bind="foreach: filteredList">
-  <a href="#" class="list-group-item active" data-bind="text: name, click: $parent.setLocation">First item</a>
+               <input class="search-box" id="search-box" data-bind="textInput: searchItem, valueUpdate: 'afterkeydown'" />
+               <div class="list-group" data-bind="foreach: filteredList">
+                <a href="#" class="list-group-item active" data-bind="text: name, click: $parent.setLocation">First item</a>
+               </div>
+
+               <div data-bind="with: currentLocation">
+                    <h2 data-bind="text: name"></h2>
+                    <div class="wikipedia-container" data-bind="text: description">
+                    </div>
+                    <a href="" data-bind="text:name, attr:{ href:url} "></a>
               </div>
-
-          <div data-bind="with: currentLocation">
-              <h2 data-bind="text: name"></h2>
-              <div class="wikipedia-container" data-bind="text: description">
-
-
-
-    </div><a href="" data-bind="text:name, attr:{ href:url} "></a>
-
-              </div>
-
           </div>
           <div class="col-sm-8 m-container">
-
               <div id="map">
-
               </div>
           </div>
-      
       </div>
-      
-      
-    
-   
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM6fRwOU2k_vbYl-u8fu2Em8v86r2vtZw&callback=startApp">
     </script>
