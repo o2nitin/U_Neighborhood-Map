@@ -1,8 +1,8 @@
 #map {
-        height: 650px;
-        width: 100%;
-       }
-.m-container{
+    height: 650px;
+    width: 100%;
+}
+.m-container {
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -18,15 +18,15 @@
 	padding: 5px 20px;
     color: black;
 }
-.list-box{
+.list-box {
     background-color:#4b5059;
     height: 650px;
     color: white;
 }
-.list{
+.list {
     background-color: azure;
 }
-.list-group{
+.list-group {
     height: 350px;
     overflow: scroll;
     overflow-x: hidden;
