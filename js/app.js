@@ -91,7 +91,7 @@ var Location = function(data) {
 
 
     this.wikiLinks = ko.observableArray([]);
-    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + self.name + '&format=json&callback=wikiCallback';
+    var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + self.name + '&format=json&callback=wikiCallback';
     var wikiRequestTimeout = setTimeout(function() {
         $wikiElem.text("failed to get Some or all wikipedia resources please Reload the page");
     }, 8000);
